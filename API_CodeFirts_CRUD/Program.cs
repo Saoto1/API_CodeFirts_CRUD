@@ -20,7 +20,7 @@ builder.Services.AddDbContext<DBContext>(options =>
 
 var app = builder.Build();
 
-//Inicia una migracion, para la creacion de lka base de datos, esto se ejecuta,cada vez
+//Inicia una migracion, para la creacion de la base de datos, esto se ejecuta,cada vez
 //que se inicia el proyecto.
 //using (var scope = app.Services.CreateScope())
 //{ 

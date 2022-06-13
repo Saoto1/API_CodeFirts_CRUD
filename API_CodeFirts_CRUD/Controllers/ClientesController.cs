@@ -7,23 +7,23 @@ namespace API_CodeFirts_CRUD.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class ClientesController : ControllerBase
     {
         private DBContext _context;
 
-        public ValuesController( DBContext context)
+        public ClientesController( DBContext context)
         {
             _context = context;
         }
 
-        // GET: api/<ValuesController>
+        // GET: api/<ClientesController>
         [HttpGet]
         public IEnumerable<Clientes> Get()
         {
           return  _context.Clientes.ToList();           
-        }   
+        }
 
-        // GET api/<ValuesController>/5
+        // GET api/<ClientesController>/5
         [HttpGet("{id}")]
         public IEnumerable<Clientes> Get(int id)
         {
@@ -31,7 +31,7 @@ namespace API_CodeFirts_CRUD.Controllers
             return ReturID.ToList();
         }
 
-        // POST api/<ValuesController>
+        // POST api/<ClientesController>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] Clientes cliente )
         {
@@ -51,7 +51,7 @@ namespace API_CodeFirts_CRUD.Controllers
 
         }
 
-        // PUT api/<ValuesController>/5
+        // PUT api/<ClientesController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Clientes cliente)
         {
@@ -76,10 +76,15 @@ namespace API_CodeFirts_CRUD.Controllers
 
         }
 
-        // DELETE api/<ValuesController>/5
+        // DELETE api/<ClientesController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            var cliente = _context.Clientes.FirstOrDefault(s => s.Id == id);
+            _context.Remove(cliente);
+            _context.SaveChanges();
+
+
         }
     }
 }
