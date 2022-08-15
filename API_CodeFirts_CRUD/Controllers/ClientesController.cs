@@ -53,7 +53,7 @@ namespace API_CodeFirts_CRUD.Controllers
 
         // PUT api/<ClientesController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Clientes cliente)
+        public ActionResult<Clientes> Put(int id, [FromBody] Clientes cliente)
         {
             try
             {
@@ -65,12 +65,13 @@ namespace API_CodeFirts_CRUD.Controllers
                 _context.Update(clientes);
                 _context.SaveChanges();
 
+                return Ok();
 
 
             }
             catch (Exception)
             {
-
+                return BadRequest();
                 throw;
             }
 
@@ -78,11 +79,22 @@ namespace API_CodeFirts_CRUD.Controllers
 
         // DELETE api/<ClientesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<Clientes> Delete(int id)
         {
-            var cliente = _context.Clientes.FirstOrDefault(s => s.Id == id);
-            _context.Remove(cliente);
-            _context.SaveChanges();
+            try
+            {
+                var cliente = _context.Clientes.FirstOrDefault(s => s.Id == id);
+                _context.Remove(cliente);
+                _context.SaveChanges();
+
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+                throw;
+            }
+           
 
 
         }
