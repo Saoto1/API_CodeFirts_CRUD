@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DB_Entidades.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20220613005606_InitDB")]
-    partial class InitDB
+    [Migration("20220822225834_Test")]
+    partial class Test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -31,6 +31,9 @@ namespace DB_Entidades.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ClientesId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Desde")
                         .HasColumnType("datetime2");
@@ -44,12 +47,18 @@ namespace DB_Entidades.Migrations
                     b.Property<int>("IdCliente")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdClienteFK")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdLibro")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdLibroFK")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdCliente");
+                    b.HasIndex("ClientesId");
 
                     b.HasIndex("IdLibro");
 
@@ -127,7 +136,7 @@ namespace DB_Entidades.Migrations
                 {
                     b.HasOne("DB_Entidades.Clientes", "Clientes")
                         .WithMany()
-                        .HasForeignKey("IdCliente")
+                        .HasForeignKey("ClientesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
