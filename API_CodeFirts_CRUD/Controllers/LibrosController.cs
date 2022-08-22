@@ -10,6 +10,12 @@ namespace API_CodeFirts_CRUD.Controllers
     public class LibrosController : ControllerBase
     {
         private DBContext _context;
+
+        public LibrosController(DBContext context)
+        {
+            _context = context;
+        }
+
         // GET: api/<LibrosController>
         [HttpGet]
         public IEnumerable<Libros> Get()
@@ -45,7 +51,7 @@ namespace API_CodeFirts_CRUD.Controllers
 
         // PUT api/<LibrosController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Libros libro)
+        public ActionResult Put(int id, [FromBody] Libros libro)
         {
             try
             {
@@ -58,11 +64,13 @@ namespace API_CodeFirts_CRUD.Controllers
                 libros.Precio = libro.Precio;
                 libros.Genero = libro.Genero;            
                 _context.SaveChanges();
+
+                return Ok(libros);
             }
             catch (Exception)
             {
 
-                BadRequest();
+              return  BadRequest();
             }
         }
 
