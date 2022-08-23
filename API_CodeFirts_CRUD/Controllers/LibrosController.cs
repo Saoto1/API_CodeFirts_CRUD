@@ -1,4 +1,5 @@
-﻿using DB_Entidades;
+﻿using API_CodeFirts_CRUD.Helpers;
+using DB_Entidades;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -7,7 +8,7 @@ namespace API_CodeFirts_CRUD.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LibrosController : ControllerBase
+    public class LibrosController : Controller
     {
         private DBContext _context;
 
@@ -18,32 +19,88 @@ namespace API_CodeFirts_CRUD.Controllers
 
         // GET: api/<LibrosController>
         [HttpGet]
-        public IEnumerable<Libros> Get()
+        public async Task<JsonResult> Get()
         {
-            return _context.Libros.ToList();
+           
+            try
+            {
+                var data = _context.Libros.ToList();
+                return Json(new GenericResponse<List<Libros>>
+                {
+                    State = true,
+                    Message = "Transaccione exitosa",
+                    Data = data
+
+                });
+
+            }
+            catch (Exception e)
+            {
+                return Json(new GenericResponse<List<Libros>>
+                {
+                    State = false,
+                    Message = $"Ocurrio un error {e}",
+                    Data = null
+
+                });
+                throw;
+            }
         }
 
         // GET api/<LibrosController>/5
         [HttpGet("{id}")]
-        public IEnumerable<Libros> Get(int id)
+        public async Task<JsonResult> Get(int id)
         {
-            var libro = (from n in _context.Libros where n.Id.Equals(id) select n).ToList();
-            return libro;
+            try
+            {
+                var libro = (from n in _context.Libros where n.Id.Equals(id) select n).ToList();
+                return Json(new GenericResponse<List<Libros>>
+                {
+                    State = true,
+                    Message = "Transaccione exitosa",
+                    Data = libro
+
+                });
+            }
+            catch (Exception e)
+            {
+                return Json(new GenericResponse<List<Libros>>
+                {
+                    State = false,
+                    Message = $"Ocurrio un error {e}",
+                    Data = null
+
+                });
+                throw;
+            }
+         
         }
 
         // POST api/<LibrosController>
         [HttpPost]
-        public async Task <ActionResult> Post([FromBody] Libros libro)
+        public async Task <JsonResult> Post([FromBody] Libros libro)
         {
             try
             {
                 _context.Libros.Add(libro);
                 await _context.SaveChangesAsync();
-                return Ok(libro);
+                return Json(new GenericResponse<List<Libros>>
+                {
+                    State = true,
+                    Message = "Transaccione exitosa",
+                    Data = null
+
+                });
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return Json(new GenericResponse<List<Libros>>
+                {
+                    State = false,
+                    Message = $"Ocurrio un error {e}",
+                    Data = null
+
+                });
 
             }
 
@@ -51,7 +108,7 @@ namespace API_CodeFirts_CRUD.Controllers
 
         // PUT api/<LibrosController>/5
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] Libros libro)
+        public async Task<JsonResult> Put(int id, [FromBody] Libros libro)
         {
             try
             {
@@ -65,12 +122,24 @@ namespace API_CodeFirts_CRUD.Controllers
                 libros.Genero = libro.Genero;            
                 _context.SaveChanges();
 
-                return Ok(libros);
+                return Json(new GenericResponse<List<Libros>>
+                {
+                    State = true,
+                    Message = "Transaccione exitosa",
+                    Data = null
+
+                });
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
-              return  BadRequest();
+                return Json(new GenericResponse<List<Libros>>
+                {
+                    State = false,
+                    Message = $"Ocurrio un error {e}",
+                    Data = null
+
+                });
             }
         }
 
@@ -78,7 +147,7 @@ namespace API_CodeFirts_CRUD.Controllers
 
         // DELETE api/<LibrosController>/5
         [HttpDelete("{id}")]
-        public ActionResult<Libros> Delete(int id)
+        public async Task<JsonResult> Delete(int id)
         {
 
             try
@@ -86,11 +155,23 @@ namespace API_CodeFirts_CRUD.Controllers
                 var cliente = _context.Clientes.FirstOrDefault(s => s.Id == id);
                 _context.Remove(cliente);
                 _context.SaveChanges();
-                return Ok();
+                return Json(new GenericResponse<List<Libros>>
+                {
+                    State = true,
+                    Message = "Transaccione exitosa",
+                    Data = null
+
+                });
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest();
+                return Json(new GenericResponse<List<Libros>>
+                {
+                    State = false,
+                    Message = $"Ocurrio un error {e}",
+                    Data = null
+
+                });
                 throw;
             }
         }
